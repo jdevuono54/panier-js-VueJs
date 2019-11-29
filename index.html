@@ -1,0 +1,42 @@
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css" media="screen"/>
+</head>
+<body>
+<div id="app">
+    <div id="wrapper">
+        <div id="products">
+
+            <div class="produit" v-for="produit in produits">
+                <div class="photo"><img :src="produit.photo"></div>
+                <div class="nom">{{ produit.nom }}</div>
+                <div class="description">{{ produit.description }}</div>
+                <div class="prix">{{ produit.prix }}</div>
+                <button type="button" @click="ajouterPanier(produit)" >Ajouter au panier</button>
+            </div>
+
+        </div>
+        <div id="panier" style="">
+            <h2>Votre panier</h2>
+            <div id="panier-content">
+                <div v-for="produit in panier">
+                    {{ produit.qte }} x {{ produit.nom }} : {{ produit.prix }} €
+                    <button type="button" @click="enleverProduitPanier(produit)">🗑️</button>
+                </div>
+            </div>
+            <div id="panier-total">
+                <p>Total: {{ total }} €</p>
+            </div>
+            <div id="panier-actions">
+                <button id="empty" @click="emptyCart">Vider le panier</button>
+                <button id="buy">Commander</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="app.js"></script>

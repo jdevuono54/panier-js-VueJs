@@ -1,0 +1,26 @@
+body{
+    font-family: Helvetica;
+    font-weight: 200;
+}
+#wrapper{
+    display: flex;
+    padding: 1em;
+}
+
+#products{
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.photo > img {
+    width: 200px;
+    height: auto;
+}
+.produit{
+    border: 1px solid black;
+    padding: 2vw;
+    text-align: center;
+    margin: 2vw;
+    width: 250px;
+}
