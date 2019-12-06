@@ -34,29 +34,57 @@ var app = new Vue({
       this.produits = response.data;
     })
 
-    axiosWrapper.get("cart").then((response) => {
-      this.panier = response.data;
-    })
+    this.chargerPanier()
   },
   data : {
     produits : [],
     panier : [],
     total : 0,
+    commandeValid:false,
   },
   methods : {
+    calculPanierTtlPanier(){
+      let ttl = 0;
+      this.panier.forEach((produit) => {
+        ttl += (produit.qte * produit.prix)
+      })
+      this.total = ttl;
+    },
+    chargerPanier(){
+      axiosWrapper.get("cart").then((response) => {
+        this.panier = response.data;
+        this.calculPanierTtlPanier();
+      })
+    },
     ajouterPanier(produit) {
       axiosWrapper.post("cart/"+produit.id).then((response) => {
         this.panier = response.data;
+        this.calculPanierTtlPanier();
       })
     },
     enleverProduitPanier(produit){
       axiosWrapper.delete("cart/"+produit.id).then((response) => {
         this.panier = response.data;
+        this.calculPanierTtlPanier();
       })
     },
     emptyCart(){
       axiosWrapper.delete("cart");
       this.panier = [];
+      this.total = 0;
+    },
+    commander(){
+      this.chargerPanier()
+      let produit_valid = 0;
+      this.panier.forEach((produit,i) => {
+        axiosWrapper.put("cart/"+produit.id+"/buy").then((response) => {
+          this.panier[i].ok = true;
+          produit_valid++;
+          if (produit_valid === this.panier.length){
+            this.commandeValid = true;
+          }
+        })
+      })
     }
   }
 });
